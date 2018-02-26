@@ -1,0 +1,122 @@
+input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #FFF;
+    width: 100%;
+    height: 18px;
+}
+
+.todoListMain {
+    padding: 10px;
+    background-color: #ecf0f5
+}
+
+.todoListMain .header {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+button {
+    padding: 8px;
+    font-size: 13px;
+    margin: 10px;
+    margin-right: 0px;
+    background-color: #0066FF;
+    color: #FFF;
+    border: 2px solid #0066FF;
+
+}
+
+.danager {
+    background-color: red !important;
+    border: 2px solid red;
+}
+
+.danager:hover {
+    background-color: #920606 !important;
+    border: 2px solid #920606 !important;
+    cursor: pointer;
+}
+
+.success {
+    background-color: green !important;
+    border: 2px solid green;
+}
+
+.success.input {
+    margin: 0 !important;
+}
+
+.success:hover {
+    background-color: greenyellow !important;
+    border: 2px solid greenyellow !important;
+    cursor: pointer;
+}
+
+.todoListMain .header button:hover {
+    background-color: #003399;
+    border: 2px solid #003399;
+    cursor: pointer;
+}
+
+.todoListMain .theList {
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+}
+
+.todoListMain .theList .text {
+    color: #333;
+    background-color: rgba(8, 224, 184, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+    transition: background-color .2s ease-out;
+    width: 100%;
+}
+
+.todoListMain .theList .text:hover {
+    cursor: pointer;
+}
+
+.todoListMain .theList .text.completed {
+    background-color: rgba(224, 8, 48, 0.5);
+}
+
+.error {
+    border: 1px solid red !important;
+}
+
+.info {
+    border: 1px solid red !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.right {
+    float: right;
+}
+
+.default {
+    background-color: rgb(112, 116, 112) !important;
+    border: 2px solid rgb(112, 116, 112);
+}
+
+.default:hover {
+    background-color: rgb(173, 175, 170) !important;
+    border: 2px solid rgb(173, 175, 170) !important;
+    cursor: pointer;
+}
+
+.noTask {
+    font-size: 22px;
+    margin-left: 37%;
+    padding-top: 70px;
+    color: red
+}
+
+.gap{
+    margin-right: 5px;
+}
