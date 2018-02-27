@@ -11,7 +11,7 @@ export const TaskActions = {
 
 function index() {
     return dispatch => {
-        TaskService.index()
+        return TaskService.index()
             .then(
                 todos => {
                     dispatch(success(todos));
@@ -35,7 +35,7 @@ function index() {
 
 function create(payload) {
     return dispatch => {
-        TaskService.create(payload)
+        return TaskService.create(payload)
             .then(
                 todo => {
                     dispatch(createSuccess(todo));
@@ -59,7 +59,7 @@ function create(payload) {
 
 function update(todo, payload) {
     return dispatch => {
-        TaskService.update(todo, payload)
+        return TaskService.update(todo, payload)
             .then(
                 todo => {
                     dispatch(updateSuccess(todo));
@@ -82,7 +82,7 @@ function update(todo, payload) {
 
 function deleteTodo(todo) {
     return dispatch => {
-        TaskService.deleteTodo(todo)
+        return TaskService.deleteTodo(todo)
             .then(
                 todo => {
                     dispatch(deleteSuccess(todo));

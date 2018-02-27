@@ -13,16 +13,20 @@ class App extends React.Component {
         history.listen((location, action) => {
         });
     }
-    componentWillMount(){
+
+    componentWillMount() {
         history.push('/todo');
     }
+
     render() {
         const {alert} = this.props;
         return (
             <div className="jumbotron">
                 <div className="container">
                     <div className='logo'>
-                        <Avatar  alt="Remy Sharp" src="https://is1-ssl.mzstatic.com/image/thumb/Purple111/v4/6e/fd/cb/6efdcbca-633e-e2f7-3b87-e76b859b7e1c/source/512x512bb.jpg" className='avatar' />
+                        <Avatar alt="Remy Sharp"
+                                src="https://is1-ssl.mzstatic.com/image/thumb/Purple111/v4/6e/fd/cb/6efdcbca-633e-e2f7-3b87-e76b859b7e1c/source/512x512bb.jpg"
+                                className='avatar'/>
                         <span>
                             Todo
                         </span>

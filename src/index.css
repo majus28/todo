@@ -1,14 +1,16 @@
 body {
-  padding: 50px;
-  font-family: sans-serif;
+    padding: 50px;
+    font-family: sans-serif;
 }
-.container{
-  padding-left: 20%;
-  padding-right: 20%;
+
+.container {
+    padding-left: 20%;
+    padding-right: 20%;
 }
+
 #app {
-  max-width: 100%;
-  width: 900px;
-  margin: 2em auto;
-  padding: 1em;
+    max-width: 100%;
+    width: 900px;
+    margin: 2em auto;
+    padding: 1em;
 }

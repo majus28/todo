@@ -55,7 +55,6 @@ button {
     cursor: pointer;
 }
 
-
 .todoListMain .theList {
     list-style: none;
     padding-left: 0;
@@ -114,6 +113,6 @@ button {
     color: red
 }
 
-.gap{
+.gap {
     margin-right: 5px;
 }

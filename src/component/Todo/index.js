@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {TaskActions} from '../../actions';
-
+import Loader from '../loader'
 
 class Todo extends Component {
     componentWillMount() {
@@ -13,7 +13,12 @@ class Todo extends Component {
     }
 
     loadRemoteTodos() {
-        this.props.dispatch(TaskActions.index());
+        var thisState = this;
+        this.props.loadTasks().then(function () {
+            thisState.setState({
+                loading: false,
+            })
+        });
     }
 
     constructor(props) {
@@ -28,7 +33,7 @@ class Todo extends Component {
             value: '',
             disabled: false,
             menu: 'All',
-            loading:true
+            loading: true
         };
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -37,19 +42,23 @@ class Todo extends Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
         this.statusChange = this.statusChange.bind(this);
+        this.loadRemoteTodos = this.loadRemoteTodos.bind(this);
     }
 
 
     addItem(e) {
         e.preventDefault();
         if (this.state.value !== "") {
+            var $thisState = this;
+            $thisState.loadingChange(true);
             var data = {
                 note: this.state.value,
                 description: this.state.value,
                 status: 'Created'
             };
-            this.props.dispatch(TaskActions.create(JSON.stringify(data)));
-            this.props.dispatch(TaskActions.index());
+            this.props.createTask(JSON.stringify(data)).then(function () {
+                $thisState.loadingChange(false);
+            });
             this.setState({
                 value: ''
             });
@@ -84,17 +93,22 @@ class Todo extends Component {
                 });
             } else {
                 this.setState({
-                    error: true
+                    error: true,
+                    value: e.target.value,
                 });
             }
         }
     }
 
     deleteItem(key) {
+        var $thisState = this;
+        $thisState.loadingChange(true);
         var filteredItems = this.props.items.filter(function (item) {
             return (item.key !== key);
         });
-        this.props.dispatch(TaskActions.deleteTodo(key));
+        this.props.deleteTask(key).then(function () {
+            $thisState.loadingChange(false);
+        });
         this.setState({
             items: filteredItems
         });
@@ -114,16 +128,27 @@ class Todo extends Component {
     }
 
     async updateTodo(key) {
+        var $thisState = this;
+        $thisState.loadingChange(true);
         var data = {
             note: this.state.editValue,
             description: this.state.editValue,
         };
-        this.props.dispatch(TaskActions.update(key, JSON.stringify(data)))
+        this.props.updateTask(key, JSON.stringify(data)).then(function () {
+            $thisState.loadingChange(false);
+        });
         this.handleCancel();
     }
 
+    loadingChange(boolean) {
+        this.setState({
+            loading: boolean
+        })
+    }
 
     async statusChange(key) {
+        var $thisState = this;
+        $thisState.loadingChange(true)
         var objIndex = this.props.items.findIndex((obj => obj.id === key));
         var status = this.props.items[objIndex].status;
         var todo = this.props.items[objIndex];
@@ -139,36 +164,51 @@ class Todo extends Component {
             this.props.items[objIndex].status = 'Created';
             data['status'] = 'Created';
         }
-        this.props.dispatch(TaskActions.update(key, JSON.stringify(data)));
+        this.props.updateTask(key, JSON.stringify(data)).then(function () {
+            $thisState.loadingChange(false)
+        });
+    }
+
+    renderScreen() {
+        if (this.state.loading) {
+            return (
+                <Loader/>
+            )
+        } else {
+            return (
+                <div className="todoListMain container" id='app'>
+                    <div className="header">
+                        <TextField
+                            hintText="Add todo"
+                            fullWidth={true}
+                            onChange={this.validate}
+                            value={this.state.value}
+                        />
+                        <RaisedButton onClick={this.addItem} backgroundColor="rgb(53, 218, 51)">Add</RaisedButton>
+                    </div>
+
+                    <div>
+                    </div>
+                    <TodoItems
+                        validate={this.validate}
+                        cancel={this.handleCancel}
+                        propsData={this.state}
+                        delete={this.deleteItem}
+                        update={this.updateItem}
+                        entries={this.props.items}
+                        updateTodo={this.updateTodo}
+                        statusChange={this.statusChange}/>
+                </div>
+            );
+        }
     }
 
     render() {
         return (
-            <div className="todoListMain container" id='app'>
-                <div className="header">
-                    <TextField
-                        hintText="Add todo"
-                        fullWidth={true}
-                        onChange={this.validate}
-                        value={this.state.value}
-                    />
-                    <RaisedButton onClick={this.addItem} backgroundColor="rgb(53, 218, 51)">Add</RaisedButton>
-                </div>
-
-                <div>
-                </div>
-                <TodoItems
-                    validate={this.validate}
-                    cancel={this.handleCancel}
-                    propsData={this.state}
-                    delete={this.deleteItem}
-                    update={this.updateItem}
-                    entries={this.props.items}
-                    updateTodo={this.updateTodo}
-                    statusChange={this.statusChange}/>
+            <div>
+                {this.renderScreen()}
             </div>
-
-        );
+        )
     }
 }
 
@@ -176,7 +216,22 @@ const mapStateToProps = (state) => {
     return {
         items: state.todos
     };
-}
+};
 
 
-export default connect(mapStateToProps)(Todo);
+const mapDispatchToProps = (dispatch) => ({
+    loadTasks() {
+        return dispatch(TaskActions.index());
+    },
+    createTask(todo) {
+        return dispatch(TaskActions.create(todo))
+    },
+    deleteTask(todo) {
+        return dispatch(TaskActions.deleteTodo(todo))
+    },
+    updateTask(id, values) {
+        return dispatch(TaskActions.update(id, values))
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo);
