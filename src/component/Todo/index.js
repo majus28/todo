@@ -27,7 +27,8 @@ class Todo extends Component {
             editItem: [],
             value: '',
             disabled: false,
-            menu: 'All'
+            menu: 'All',
+            loading:true
         };
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -35,29 +36,9 @@ class Todo extends Component {
         this.validate = this.validate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
-        this.statusChange = this.statusChange.bind(this)
-        this.menuChange = this.menuChange.bind(this)
+        this.statusChange = this.statusChange.bind(this);
     }
 
-    deleteItem(key) {
-        var filteredItems = this.props.items.filter(function (item) {
-            return (item.key !== key);
-        });
-        this.props.dispatch(TaskActions.deleteTodo(key));
-        this.setState({
-            items: filteredItems
-        });
-    }
-
-
-    updateItem(key) {
-        var editItem = this.props.items.find(function (item) {
-            return (item.id === key);
-        });
-
-        this.setState({editValue: editItem.note, editItem: editItem});
-        this.setState({is_edit: true, btnText: 'Update'})
-    }
 
     addItem(e) {
         e.preventDefault();
@@ -65,13 +46,13 @@ class Todo extends Component {
             var data = {
                 note: this.state.value,
                 description: this.state.value,
-                status:'Created'
-            }
-            this.props.dispatch(TaskActions.create(JSON.stringify(data)))
-            this.props.dispatch(TaskActions.index())
+                status: 'Created'
+            };
+            this.props.dispatch(TaskActions.create(JSON.stringify(data)));
+            this.props.dispatch(TaskActions.index());
             this.setState({
                 value: ''
-            })
+            });
         } else {
             this.setState({
                 error: true
@@ -107,7 +88,25 @@ class Todo extends Component {
                 });
             }
         }
+    }
 
+    deleteItem(key) {
+        var filteredItems = this.props.items.filter(function (item) {
+            return (item.key !== key);
+        });
+        this.props.dispatch(TaskActions.deleteTodo(key));
+        this.setState({
+            items: filteredItems
+        });
+    }
+
+    updateItem(key) {
+        var editItem = this.props.items.find(function (item) {
+            return (item.id === key);
+        });
+
+        this.setState({editValue: editItem.note, editItem: editItem});
+        this.setState({is_edit: true, btnText: 'Update'})
     }
 
     handleCancel() {
@@ -118,7 +117,6 @@ class Todo extends Component {
         var data = {
             note: this.state.editValue,
             description: this.state.editValue,
-            status:'Completed'
         };
         this.props.dispatch(TaskActions.update(key, JSON.stringify(data)))
         this.handleCancel();
@@ -130,7 +128,7 @@ class Todo extends Component {
         var status = this.props.items[objIndex].status;
         var todo = this.props.items[objIndex];
         var data = {
-            note:todo.note,
+            note: todo.note,
             description: todo.description,
         };
         if (status === 'Created') {
@@ -142,12 +140,6 @@ class Todo extends Component {
             data['status'] = 'Created';
         }
         this.props.dispatch(TaskActions.update(key, JSON.stringify(data)));
-    }
-
-    menuChange(menuData) {
-        this.setState({
-            menu: menuData
-        })
     }
 
     render() {
@@ -162,6 +154,7 @@ class Todo extends Component {
                     />
                     <RaisedButton onClick={this.addItem} backgroundColor="rgb(53, 218, 51)">Add</RaisedButton>
                 </div>
+
                 <div>
                 </div>
                 <TodoItems

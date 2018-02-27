@@ -22,8 +22,7 @@ export function todos(state = initialState, action) {
             return state;
         case TaskConstants.DELETED_SUCCESS:
             let DeleteTodoIndex = state.findIndex(todo => todo.id === action.todo.id);
-            state.splice(todoIndex, 1);
-           console.log(DeleteTodoIndex);
+            state.splice(DeleteTodoIndex, 1);
             return state;
         default:
             return state

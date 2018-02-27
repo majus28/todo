@@ -39,7 +39,7 @@ statusChange(key){
   createTasks(item) {
     if(this.props.propsData.is_edit && this.props.propsData.editItem.id === item.id){
       return(
-        <div>
+        <div key={item.id}>
           <Flex p={2} align='center'>
             <Box px={2} style={{width:'100%'}}>
             <input onChange={this.inputChange} ref={(a) => this._inputElement = a}
@@ -58,7 +58,7 @@ statusChange(key){
       )
     }else{
       return(
-        <div>
+        <div key={item.id}>
         <Flex p={2} align='center'>
             <Box px={2} w={1/2} className={'text ' + (item.status ? item.status.toLowerCase() : 'created')} onClick={() => this.statusChange(item.id)}>
             <span  data-tip data-for='delete' key={item.id}>{item.note}</span>

@@ -15,6 +15,7 @@ input {
     width: 100%;
     justify-content: center;
     display: flex;
+    height: 36px;
 }
 
 button {
@@ -54,11 +55,6 @@ button {
     cursor: pointer;
 }
 
-.todoListMain .header button:hover {
-    background-color: #003399;
-    border: 2px solid #003399;
-    cursor: pointer;
-}
 
 .todoListMain .theList {
     list-style: none;
@@ -81,6 +77,7 @@ button {
 
 .todoListMain .theList .text.completed {
     background-color: rgba(224, 8, 48, 0.5);
+    text-decoration: line-through;
 }
 
 .error {
