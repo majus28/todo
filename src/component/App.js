@@ -35,9 +35,6 @@ class App extends React.Component {
                         </span>
                     </div>
                     <div className="col-sm-8 col-sm-offset-2">
-                        {alert && alert.message &&
-                        <div className={`alert ${alert.type}`}>{alert.message}</div>
-                        }
                         <Router history={history}>
                             <div>
                                 <Route path="/login" component={Login}/>

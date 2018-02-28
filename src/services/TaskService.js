@@ -7,14 +7,17 @@ export const TaskService = {
     deleteTodo
 };
 var accessToken = localStorage.getItem('auth_token');
-
+let authHeader = {
+    'Authorization': 'Bearer ' + accessToken,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'}
 function index() {
     const requestOptions = {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-        },
+            'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
     };
     let AppUrl = API_URL + 'api/tasks';
     return fetch(AppUrl, requestOptions).then((response) => response.json())
@@ -29,10 +32,7 @@ function index() {
 function create(payload) {
     const requestOptions = {
         method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-        },
+        headers: authHeader,
         body: payload,
     };
     let AppUrl = API_URL + 'api/tasks';
@@ -49,10 +49,7 @@ function create(payload) {
 function update(todo, payload) {
     const requestOptions = {
         method: 'PUT',
-        headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-        },
+        headers:authHeader,
         body: payload,
     };
     let AppUrl = API_URL + 'api/tasks/' + todo;
@@ -69,10 +66,7 @@ function update(todo, payload) {
 function deleteTodo(todo) {
     const requestOptions = {
         method: 'DELETE',
-        headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-        },
+        headers: authHeader,
     };
     let AppUrl = API_URL + 'api/tasks/' + todo;
     return fetch(AppUrl, requestOptions).then((response) => response.json())

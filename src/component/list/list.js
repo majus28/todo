@@ -84,6 +84,11 @@ class TodoItems extends Component {
 
     render() {
         var todoEntries = this.props.entries;
+        if(this.props.menu === 1){
+            todoEntries =   todoEntries.filter(item => {return item.status === 'Created'});
+        }else if(this.props.menu === 2){
+            todoEntries =   todoEntries.filter(item => {return item.status === 'Completed'});
+        }
         if (typeof(todoEntries) === 'object' && !this.props.entries.length) {
             todoEntries = [];
         }
@@ -98,8 +103,10 @@ class TodoItems extends Component {
             );
         } else {
             return (
-                <div className="theList">
-                    <span className='noTask'>No Tasks Here</span>
+                <div className="theList gap">
+                    <FlipMove duration={250} easing="ease-out">
+                    <span className='noTask'>No Todos Here</span>
+                    </FlipMove>
                 </div>
             );
         }

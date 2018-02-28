@@ -59,6 +59,7 @@ button {
     list-style: none;
     padding-left: 0;
     width: 100%;
+    margin-top: 14px;
 }
 
 .todoListMain .theList .text {
@@ -115,4 +116,10 @@ button {
 
 .gap {
     margin-right: 5px;
+}
+.NavigateTap{
+    max-width: 100%;
+    width: 900px;
+    margin: 2em auto;
+    padding: 1em;
 }

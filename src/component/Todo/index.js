@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {TaskActions} from '../../actions';
 import Loader from '../loader'
+import Navigation from '../Navigation'
 
 class Todo extends Component {
     componentWillMount() {
@@ -32,7 +33,7 @@ class Todo extends Component {
             editItem: [],
             value: '',
             disabled: false,
-            menu: 'All',
+            menu: 0,
             loading: true
         };
         this.addItem = this.addItem.bind(this);
@@ -43,6 +44,7 @@ class Todo extends Component {
         this.updateTodo = this.updateTodo.bind(this);
         this.statusChange = this.statusChange.bind(this);
         this.loadRemoteTodos = this.loadRemoteTodos.bind(this);
+        this.menuChange = this.menuChange.bind(this);
     }
 
 
@@ -169,6 +171,12 @@ class Todo extends Component {
         });
     }
 
+    menuChange(index) {
+        this.setState({
+            menu: index,
+        })
+    }
+
     renderScreen() {
         if (this.state.loading) {
             return (
@@ -176,28 +184,35 @@ class Todo extends Component {
             )
         } else {
             return (
-                <div className="todoListMain container" id='app'>
-                    <div className="header">
-                        <TextField
-                            hintText="Add todo"
-                            fullWidth={true}
-                            onChange={this.validate}
-                            value={this.state.value}
-                        />
-                        <RaisedButton onClick={this.addItem} backgroundColor="rgb(53, 218, 51)">Add</RaisedButton>
-                    </div>
+                <div>
+                    <div className="todoListMain container" id='app'>
 
-                    <div>
+                        <div className="header">
+                            <TextField
+                                hintText="Add todo"
+                                fullWidth={true}
+                                onChange={this.validate}
+                                value={this.state.value}
+                            />
+                            <RaisedButton onClick={this.addItem} backgroundColor="rgb(53, 218, 51)">Add</RaisedButton>
+                        </div>
+                        <div>
+                        </div>
+                        <TodoItems
+                            validate={this.validate}
+                            cancel={this.handleCancel}
+                            propsData={this.state}
+                            delete={this.deleteItem}
+                            update={this.updateItem}
+                            entries={this.props.items}
+                            updateTodo={this.updateTodo}
+                            statusChange={this.statusChange}
+                            menu={this.state.menu}/>
+
                     </div>
-                    <TodoItems
-                        validate={this.validate}
-                        cancel={this.handleCancel}
-                        propsData={this.state}
-                        delete={this.deleteItem}
-                        update={this.updateItem}
-                        entries={this.props.items}
-                        updateTodo={this.updateTodo}
-                        statusChange={this.statusChange}/>
+                    <div className='NavigateTap'>
+                        <Navigation menuChange={this.menuChange} menu={this.state.menu}/>
+                    </div>
                 </div>
             );
         }
